@@ -31,7 +31,7 @@ export function monthDays (year, month, weekStart) {
 }
 
 export function monthDayIsDisabled (minDate, maxDate, year, month, day) {
-  const date = DateTime.fromObject({ year, month, day, zone: 'UTC' })
+  const date = DateTime.fromObject({ year, month, day })
 
   minDate = minDate ? startOfDay(minDate) : null
   maxDate = maxDate ? startOfDay(maxDate) : null
@@ -54,6 +54,13 @@ export function yearIsDisabled (minDate, maxDate, year) {
 }
 
 export function timeComponentIsDisabled (min, max, component) {
+  if (max === 0) {
+    if (component === 0) {
+      return false
+    }
+    return true
+  }
+
   return (min && component < min) ||
          (max && component > max)
 }

@@ -113,8 +113,9 @@
           :phrases="{ok: 'Continue', cancel: 'Exit'}"
           :hour-step="2"
           :minute-step="15"
-          :min-datetime="minDatetime"
-          :max-datetime="maxDatetime"
+          value-zone="local"
+          min-datetime="2019-03-15T03:17:07+05:30"
+          max-datetime="2019-03-22T03:17:07+05:30"
           :week-start="7"
           use12-hour
           auto
@@ -174,7 +175,22 @@
 }</code></pre>
     </div>
   </div>
+  <h3>Custom</h3>
 
+<div>
+
+  <datetime
+  type="datetime"
+  placeholder="Select date"
+  class="my-wrapper-class"
+  input-class="my-input-class"
+  value-zone="Asia/Kolkata"
+  zone="Asia/Kolkata"
+  min-datetime="2019-04-01T03:30:00+05:30"
+  max-datetime="2019-04-08T02:46:00+05:30"
+  use12-hour
+></datetime>
+</div>
   <footer>
     © <a href="https://github.com/mariomka">Mario Juárez</a> -
     <a href="https://github.com/mariomka/vue-datetime">Code on Github</a>

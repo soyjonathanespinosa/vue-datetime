@@ -134,7 +134,9 @@ export default {
       newDatetime: this.datetime,
       flowManager,
       step: flowManager.first(),
-      timePartsTouched: []
+      timePartsTouched: [],
+      defaultHour: true,
+      defaultMinute: true
     }
   },
 
@@ -157,9 +159,78 @@ export default {
       return this.newDatetime.day
     },
     hour () {
+      if (
+        this.maxDatetime &&
+        this.day === this.maxDatetime.day &&
+        this.month === this.maxDatetime.month &&
+        this.year === this.maxDatetime.year
+        ) {
+        if (
+            this.timePartsTouched['hour'] === false
+          ) {
+          return this.maxDatetime.hour
+        }
+        if (this.newDatetime.hour > this.maxDatetime.hour) {
+          return this.maxDatetime.hour
+        }
+        return this.newDatetime.hour
+      }
+
+      if (
+        this.minDatetime &&
+        this.day === this.minDatetime.day &&
+        this.month === this.minDatetime.month &&
+        this.year === this.minDatetime.year
+      ) {
+        if (
+            this.timePartsTouched['hour'] === false
+          ) {
+          return this.maxDatetime.hour
+        }
+        if (this.newDatetime.hour < this.minDatetime.hour) {
+          return this.minDatetime.hour
+        }
+        return this.newDatetime.hour
+      }
+
       return this.newDatetime.hour
     },
     minute () {
+      if (
+        this.maxDatetime &&
+        this.day === this.maxDatetime.day &&
+        this.month === this.maxDatetime.month &&
+        this.year === this.maxDatetime.year &&
+        this.hour === this.maxDatetime.hour
+        ) {
+        if (
+            this.timePartsTouched['minute'] === false
+          ) {
+          return this.maxDatetime.minute
+        }
+        if (this.newDatetime.minute > this.maxDatetime.minute) {
+          return this.maxDatetime.minute
+        }
+        return this.newDatetime.minute
+      }
+
+      if (
+        this.minDatetime &&
+        this.day === this.minDatetime.day &&
+        this.month === this.minDatetime.month &&
+        this.year === this.minDatetime.year &&
+        this.hour === this.minDatetime.hour
+      ) {
+        if (
+            this.timePartsTouched['minute'] === false
+          ) {
+          return this.minDatetime.minute
+        }
+        if (this.newDatetime.minute < this.minDatetime.minute) {
+          return this.minDatetime.minute
+        }
+        return this.newDatetime.minute
+      }
       return this.newDatetime.minute
     },
     dateFormatted () {
@@ -169,10 +240,10 @@ export default {
       })
     },
     minDatetimeUTC () {
-      return this.minDatetime ? this.minDatetime.toUTC() : null
+      return this.minDatetime ? this.minDatetime.setZone('local') : null
     },
     maxDatetimeUTC () {
-      return this.maxDatetime ? this.maxDatetime.toUTC() : null
+      return this.maxDatetime ? this.maxDatetime.setZone('local') : null
     },
     minTime () {
       return (
@@ -232,6 +303,8 @@ export default {
     onChangeDate (year, month, day) {
       this.newDatetime = this.newDatetime.set({ year, month, day })
 
+      this.timePartsTouched['hour'] = false
+      this.timePartsTouched['minute'] = false
       if (this.auto) {
         this.nextStep()
       }
